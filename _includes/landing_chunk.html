@@ -1,0 +1,28 @@
+{% assign num_pages = 0 %}
+
+{% for coll in site.collections %}
+   {% if coll.label == page.collection %}
+    {% assign num_pages = coll.docs | where:'category', include.cat | size %}
+    {% assign np = coll.docs | size%}
+  {% endif %}
+{% endfor %}
+
+{%if num_pages > 0 %}
+<h2> {{ include.section_title}}</h2>
+<ul>
+{% assign pages = site.commons | where:'category', include.cat %}
+{% for p in pages %}
+<li><a href={{ p.url | relative_url }}>{{ p.title }}</a></li>
+{% endfor %}
+
+{% for coll in site.collections %}
+  {% if coll.label == page.collection %}
+    {% for p in coll.docs %}
+      {%if p.category == include.cat %}
+      <li><a href={{ p.url | relative_url }}>{{ p.title }}</a></li>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endfor %}
+{% endif %}
+</ul>
